@@ -268,7 +268,7 @@ function drawCurve(showAnswers) {
   ctx.font = "700 16px ui-sans-serif, system-ui, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("Input size (n)", leftPad + plotWidth / 2, height - 16);
+  ctx.fillText("Input Size (n)", leftPad + plotWidth / 2, height - 16);
   ctx.save();
   ctx.translate(18, topPad + plotHeight / 2);
   ctx.rotate(-Math.PI / 2);
