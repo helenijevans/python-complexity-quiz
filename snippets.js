@@ -1,7 +1,7 @@
 const templates = [
   {
     id: "sum_list",
-    weight: 10,
+    weight: 8,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -16,7 +16,7 @@ const templates = [
   },
   {
     id: "copy_positive",
-    weight: 9,
+    weight: 7,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -32,7 +32,7 @@ const templates = [
   },
   {
     id: "first_even",
-    weight: 8,
+    weight: 6,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -47,7 +47,7 @@ const templates = [
   },
   {
     id: "two_separate",
-    weight: 8,
+    weight: 6,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -70,7 +70,7 @@ const templates = [
   },
   {
     id: "constant_slice",
-    weight: 6,
+    weight: 5,
     group: "linear",
     difficulty: "Beginner",
     time: "O(1)",
@@ -85,7 +85,7 @@ const templates = [
   },
   {
     id: "reverse_copy",
-    weight: 7,
+    weight: 6,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -156,7 +156,7 @@ const templates = [
   },
   {
     id: "pair_sums",
-    weight: 8,
+    weight: 6,
     group: "loops",
     difficulty: "Nested",
     time: "O(n^2)",
@@ -172,7 +172,7 @@ const templates = [
   },
   {
     id: "has_duplicate",
-    weight: 8,
+    weight: 6,
     group: "loops",
     difficulty: "Nested",
     time: "O(n^2)",
@@ -188,7 +188,7 @@ const templates = [
   },
   {
     id: "grid_count",
-    weight: 7,
+    weight: 10,
     group: "loops",
     difficulty: "Nested",
     time: "O(n * m)",
@@ -205,7 +205,7 @@ const templates = [
   },
   {
     id: "two_inputs",
-    weight: 7,
+    weight: 10,
     group: "linear",
     difficulty: "Mixed",
     time: "O(n + m)",
@@ -225,7 +225,7 @@ const templates = [
   },
   {
     id: "matrix_build",
-    weight: 6,
+    weight: 5,
     group: "loops",
     difficulty: "Nested",
     time: "O(n^2)",
@@ -319,7 +319,7 @@ const templates = [
   },
   {
     id: "n_square_plus_m",
-    weight: 4,
+    weight: 6,
     group: "logs",
     difficulty: "Mixed",
     time: "O(n^2 + m)",
@@ -341,7 +341,7 @@ const templates = [
   },
   {
     id: "count_target",
-    weight: 9,
+    weight: 7,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -357,7 +357,7 @@ const templates = [
   },
   {
     id: "copy_squares",
-    weight: 8,
+    weight: 6,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -372,7 +372,7 @@ const templates = [
   },
   {
     id: "last_item",
-    weight: 7,
+    weight: 6,
     group: "linear",
     difficulty: "Beginner",
     time: "O(1)",
@@ -386,7 +386,7 @@ const templates = [
   },
   {
     id: "running_totals",
-    weight: 7,
+    weight: 6,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -403,7 +403,7 @@ const templates = [
   },
   {
     id: "in_place_double",
-    weight: 7,
+    weight: 6,
     group: "linear",
     difficulty: "Beginner",
     time: "O(n)",
@@ -434,7 +434,7 @@ const templates = [
   },
   {
     id: "merge_sorted_lists",
-    weight: 5,
+    weight: 7,
     group: "linear",
     difficulty: "Mixed",
     time: "O(n + m)",
@@ -466,7 +466,7 @@ const templates = [
   },
   {
     id: "membership_intersection",
-    weight: 6,
+    weight: 8,
     group: "linear",
     difficulty: "Mixed",
     time: "O(n + m)",
@@ -484,7 +484,7 @@ const templates = [
   },
   {
     id: "nested_constant_inner",
-    weight: 6,
+    weight: 4,
     group: "linear",
     difficulty: "Mixed",
     time: "O(n)",
@@ -539,7 +539,7 @@ const templates = [
   },
   {
     id: "matrix_transpose",
-    weight: 5,
+    weight: 7,
     group: "loops",
     difficulty: "Nested",
     time: "O(n * m)",
@@ -557,7 +557,7 @@ const templates = [
   },
   {
     id: "flatten_grid",
-    weight: 6,
+    weight: 8,
     group: "loops",
     difficulty: "Nested",
     time: "O(n * m)",
@@ -658,7 +658,7 @@ const templates = [
   },
   {
     id: "sort_each_row",
-    weight: 3,
+    weight: 5,
     group: "logs",
     difficulty: "Mixed",
     time: "O(n * m)",
@@ -692,7 +692,7 @@ const templates = [
   },
   {
     id: "two_independent_loops",
-    weight: 6,
+    weight: 9,
     group: "linear",
     difficulty: "Mixed",
     time: "O(n + m)",
@@ -712,7 +712,7 @@ const templates = [
   },
   {
     id: "copy_second_input",
-    weight: 5,
+    weight: 8,
     group: "linear",
     difficulty: "Mixed",
     time: "O(n + m)",
