@@ -10,7 +10,10 @@ const state = {
   score: 0,
   total: 0,
   streak: 0,
-  answered: false
+  answered: false,
+  curveShowsAnswers: false,
+  hoveredCurveLabel: "",
+  curveLines: []
 };
 
 const els = {
@@ -140,6 +143,8 @@ function newProblem() {
   els.code.innerHTML = escapeHtml(picked.code);
   els.filename.textContent = picked.filename;
   els.resultPanel.classList.remove("visible");
+  state.curveShowsAnswers = false;
+  state.hoveredCurveLabel = "";
   refreshChoices();
   drawCurve(false);
 }
@@ -195,6 +200,7 @@ function checkAnswer(revealed = false) {
   els.checkBtn.disabled = true;
   els.revealBtn.disabled = true;
   markOptions();
+  state.curveShowsAnswers = true;
   drawCurve(true);
 }
 
@@ -275,6 +281,7 @@ function drawCurve(showAnswers) {
     const isTime = showAnswers && label === state.current.time;
     const isSpace = showAnswers && label === correctSpace;
     const isSame = isTime && isSpace;
+    const isHovered = label === state.hoveredCurveLabel;
     const points = [];
     for (let n = 1; n <= 16; n += 1) {
       const x = leftPad + (plotWidth * (n - 1)) / 15;
@@ -288,32 +295,40 @@ function drawCurve(showAnswers) {
       isTime,
       isSpace,
       isSame,
-      color: isSame ? "#0891b2" : isTime ? "#0f766e" : isSpace ? "#2563eb" : "#a9b4c3",
-      labelColor: isSame ? "#0891b2" : isTime ? "#0f766e" : isSpace ? "#2563eb" : "#667085",
+      isHovered,
+      color: isSame ? "#0891b2" : isTime ? "#0f766e" : isSpace ? "#2563eb" : isHovered ? "#475467" : "#a9b4c3",
+      labelColor: isSame ? "#0891b2" : isTime ? "#0f766e" : isSpace ? "#2563eb" : isHovered ? "#344054" : "#667085",
       labelY: points[points.length - 1].y
     };
   });
+  state.curveLines = lineData;
 
-  const sortedLabels = [...lineData].sort((a, b) => a.labelY - b.labelY);
+  const labeledLines = lineData.filter(line => {
+    return (showAnswers && (line.isTime || line.isSpace)) || line.isHovered;
+  });
+  const sortedLabels = [...labeledLines].sort((a, b) => a.labelY - b.labelY);
   const labelGap = 17;
   const minLabelY = topPad + 12;
   const maxLabelY = topPad + plotHeight - 6;
   sortedLabels.forEach((line, index) => {
-    if (index > 0 && line.labelY - sortedLabels[index - 1].labelY < labelGap) {
-      line.labelY = sortedLabels[index - 1].labelY + labelGap;
+    line.labelY = Math.max(minLabelY, Math.min(maxLabelY, line.labelY));
+    if (index > 0) {
+      line.labelY = Math.max(line.labelY, sortedLabels[index - 1].labelY + labelGap);
     }
   });
-  for (let i = sortedLabels.length - 1; i >= 0; i -= 1) {
-    if (sortedLabels[i].labelY > maxLabelY) sortedLabels[i].labelY = maxLabelY;
-    if (i < sortedLabels.length - 1 && sortedLabels[i + 1].labelY - sortedLabels[i].labelY < labelGap) {
-      sortedLabels[i].labelY = sortedLabels[i + 1].labelY - labelGap;
-    }
-    if (sortedLabels[i].labelY < minLabelY) sortedLabels[i].labelY = minLabelY;
+  const overflow = sortedLabels.length ? sortedLabels[sortedLabels.length - 1].labelY - maxLabelY : 0;
+  if (overflow > 0) {
+    sortedLabels.forEach(line => {
+      line.labelY -= overflow;
+    });
   }
+  sortedLabels.forEach((line, index) => {
+    line.labelY = Math.max(minLabelY + index * labelGap, line.labelY);
+  });
 
   lineData.forEach(line => {
     ctx.strokeStyle = line.color;
-    ctx.lineWidth = line.isTime || line.isSpace ? 4 : 2;
+    ctx.lineWidth = line.isTime || line.isSpace || line.isHovered ? 4 : 2;
     ctx.setLineDash(line.isSame ? [7, 5] : []);
     ctx.beginPath();
     line.points.forEach((point, index) => {
@@ -324,23 +339,56 @@ function drawCurve(showAnswers) {
     ctx.setLineDash([]);
   });
 
-  lineData.forEach(line => {
-    const end = line.points[line.points.length - 1];
+  labeledLines.forEach(line => {
     const labelX = width - rightPad + 12;
-    ctx.strokeStyle = line.color;
-    ctx.lineWidth = 1;
-    ctx.setLineDash(line.isSame ? [4, 4] : []);
-    ctx.beginPath();
-    ctx.moveTo(end.x + 4, end.y);
-    ctx.lineTo(labelX - 5, line.labelY - 4);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
     ctx.fillStyle = line.labelColor;
     ctx.font = `${line.isTime || line.isSpace ? "700" : "600"} 13px ui-monospace, Menlo, Consolas, monospace`;
     ctx.fillText(line.label, labelX, line.labelY);
   });
 }
+
+function pointSegmentDistance(point, start, end) {
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+  if (dx === 0 && dy === 0) return Math.hypot(point.x - start.x, point.y - start.y);
+  const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / (dx * dx + dy * dy)));
+  const x = start.x + t * dx;
+  const y = start.y + t * dy;
+  return Math.hypot(point.x - x, point.y - y);
+}
+
+function hoveredCurveLabel(event) {
+  const rect = els.curve.getBoundingClientRect();
+  const point = {
+    x: ((event.clientX - rect.left) / rect.width) * els.curve.width,
+    y: ((event.clientY - rect.top) / rect.height) * els.curve.height
+  };
+  let nearest = { label: "", distance: Infinity };
+
+  state.curveLines.forEach(line => {
+    for (let i = 1; i < line.points.length; i += 1) {
+      const distance = pointSegmentDistance(point, line.points[i - 1], line.points[i]);
+      if (distance < nearest.distance) nearest = { label: line.label, distance };
+    }
+  });
+
+  return nearest.distance <= 10 ? nearest.label : "";
+}
+
+els.curve.addEventListener("mousemove", event => {
+  const nextLabel = hoveredCurveLabel(event);
+  if (nextLabel === state.hoveredCurveLabel) return;
+  state.hoveredCurveLabel = nextLabel;
+  els.curve.style.cursor = nextLabel ? "crosshair" : "default";
+  drawCurve(state.curveShowsAnswers);
+});
+
+els.curve.addEventListener("mouseleave", () => {
+  if (!state.hoveredCurveLabel) return;
+  state.hoveredCurveLabel = "";
+  els.curve.style.cursor = "default";
+  drawCurve(state.curveShowsAnswers);
+});
 
 els.checkBtn.addEventListener("click", () => checkAnswer(false));
 els.revealBtn.addEventListener("click", () => {
