@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Python Complexity Practice</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="topbar">
+          <div class="header-stack">
+            <div class="title-block">
+              <h1>Python Complexity Practice</h1>
+              <span class="credit">Built by helenijevans</span>
+            </div>
+            <div class="stats" aria-live="polite">
+              <span class="stat">Score: <strong id="score">0</strong></span>
+              <span class="stat streak">Streak: <strong id="streak">0</strong></span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="workbench" aria-label="Generated Python file">
+          <div class="code-shell">
+            <div class="filebar">
+              <div class="filename"><span class="dot"></span><span id="filename">practice.py</span></div>
+            </div>
+            <pre><code id="code"></code></pre>
+          </div>
+          <button class="primary next-code" id="newBtn" type="button">Next Code Snippet</button>
+        </section>
+
+        <aside class="side">
+          <section class="quiz-panel" aria-label="Complexity answers">
+            <div class="question">
+              <h2>Time Complexity</h2>
+              <div class="options" id="timeOptions"></div>
+            </div>
+            <div class="question">
+              <h2>Space Complexity</h2>
+              <div class="options" id="spaceOptions"></div>
+            </div>
+            <div class="actions">
+              <button class="primary" id="checkBtn" type="button" disabled>Check answer</button>
+              <button class="secondary" id="revealBtn" type="button">Reveal</button>
+            </div>
+          </section>
+
+          <div class="visual-column">
+            <section class="chart-panel" aria-label="Complexity curve comparison">
+              <h2>Complexity Visualisation</h2>
+              <canvas id="curve" width="640" height="480"></canvas>
+              <div class="chart-key">
+                <span class="key-item"><span class="swatch time"></span>Time answer</span>
+                <span class="key-item"><span class="swatch space"></span>Space answer</span>
+                <span class="key-item"><span class="swatch same"></span>Same time and space</span>
+              </div>
+            </section>
+
+            <section class="result-panel" id="resultPanel" aria-live="polite">
+              <span class="badge" id="resultBadge"></span>
+              <div class="answers">
+                <div class="answer-line"><span>Time</span><strong id="timeAnswer"></strong></div>
+                <div class="answer-line"><span>Space</span><strong id="spaceAnswer"></strong></div>
+              </div>
+              <p id="explanation"></p>
+            </section>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script src="snippets.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
